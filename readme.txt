@@ -73,7 +73,7 @@
 		sudo chage -W 7 <username/root>
 		apt install libpam-pwquality
 			/etc/security/pwquality.conf
-			# Number of characters in the new password that must not be present in the old password.
+			# Number of characters in the new password that must not be present in the old one.
 					difok = 7
 			# The minimum acceptable size for the new password.
 			# (plus one if credits are not disabled which is the default)
