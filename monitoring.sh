@@ -65,3 +65,4 @@ wall "
        Network         : $IP_ADDR ($MAC_ADDR)
        Sudo            : $SUDO_LOG commands used
        ------------------------------------------------"
+#wall = wrote all - send mensage to all users
