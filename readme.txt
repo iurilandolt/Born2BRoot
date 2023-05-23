@@ -116,6 +116,7 @@
 	getent group : displays a list of all users in a group.
 
 #broadcast .sh
+	cd /usr/local/bin/
 	systemctl enable cron
 	crontab -e
 	*/10 * * * * bash /../monitoring.sh
