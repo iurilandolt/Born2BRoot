@@ -121,7 +121,7 @@
 	crontab -e
 	*/10 * * * * bash /../monitoring.sh
 	*/10 * * * * bash /../monitoring.sh | wall
-	*/10 * * * * bash /../sleep.sh && bash /../monitoring.sh
+	*/10 * * * * bash /usr/local/bin/sleep.sh && bash /usr/local/bin/monitoring.sh
 
 #display
 	VBoxVGA
