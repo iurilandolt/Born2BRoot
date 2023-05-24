@@ -60,7 +60,7 @@
 	systemctl restart ssh
 	VM >> Settings >> Network >> Adapter 1 >> Advanced >> Port Forwarding.
 		Port 4242
-	ssh <username>@localhost -p 4242
+	ssh <username>@localhost/VMip -p 4242
 
 #pwpolicy
 	Edit /etc/login.defs
@@ -99,29 +99,43 @@
 #hostname/users/groups
 	hostnamectl set-hostname <new_hostname>
 	hostnamectl status
-	useradd : creates a new user.
-	usermod : changes the user’s parameters: -l for the username, -c for the full name, -g for groups by group ID.
-	userdel -r : deletes a user and all associated files.
-	id -u : displays user ID.
-	users : shows a list of all currently logged in users.
-	cat /etc/passwd | cut -d ":" -f 1 : displays a list of all users on the machine.
-	cat /etc/passwd | awk -F '{print $1}' : same as above.
+	useradd
+		#creates a new user.
+	usermod
+		#changes the user’s parameters: -l for the username, -c for the full name, -g for groups by group ID.
+	userdel -r
+		#deletes a user and all associated files.
+	id -u
+		#displays user ID.
+	users
+		#shows a list of all currently logged in users.
+	cat /etc/passwd | cut -d ":" -f 1
+		#displays a list of all users on the machine.
+	cat /etc/passwd | awk -F '{print $1}'
+		#displays a list of all users on the machine.
 
-	groupadd : creates a new group.
-	gpasswd -a : adds a user to a group.
-	gpasswd -d : removes a user from a group.
-	groupdel : deletes a group.
-	groups : displays the groups of a user.
-	id -g : shows a user’s main group ID.
-	getent group : displays a list of all users in a group.
+	groupadd
+		#creates a new group.
+	gpasswd -a
+		#adds a user to a group.
+	gpasswd -d
+		#removes a user from a group.
+	groupdel
+		#deletes a group.
+	groups
+		#displays the groups of a user.
+	id -g
+		#shows a user’s main group ID.
+	getent group
+		#displays a list of all users in a group.
 
 #broadcast .sh
 	cd /usr/local/bin/
 	systemctl enable cron
-	crontab -e
-	*/10 * * * * bash /../monitoring.sh
-	*/10 * * * * bash /../monitoring.sh | wall
-	*/10 * * * * bash /usr/local/bin/sleep.sh && bash /usr/local/bin/monitoring.sh
+	sudo crontab -u root -e
+		*/10 * * * * bash /usr/local/bin/sleep.sh && bash /usr/local/bin/monitoring.sh
+	sudo visudo
+		your_username ALL=(root) NOPASSWD: /usr/local/bin/monitoring.sh
 
 #display
 	VBoxVGA
@@ -137,15 +151,3 @@
 		Linux: sha1sum yourmachine.vdi
 		For Mac M1: shasum yourmachine.utm/Images/disk-0.qcow2
 		MacOS: shasum yourmachine.vdi
-
-
-https://42-cursus.gitbook.io/guide/rank-01/born2beroot
-
-https://github.com/pasqualerossi/Born2BeRoot-Guide/blob/main/README.md
-
-https://github.com/hanshazairi/42-born2beroot
-
-https://github.com/mcombeau/Born2beroot/tree/main/guide
-
-https://cdn.intra.42.fr/pdf/pdf/81093/en.subject.pdf
-

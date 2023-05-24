@@ -1,0 +1,122 @@
+Git repo contains a signature.txt file.
+Check the signature against the students “.vdi” file.
+Clone VM || create a snapshot && open VM.
+
+How does a virtual machine work and what is its purpose?
+#
+
+The basic differences between CentOS and Debian?
+#
+
+Why debian?
+#
+
+What is the difference between aptitude, apt?
+#
+
+What is APPArmor?
+#
+
+Connect to VM as a created user (which isn’t a root).
+	Ensure the password follows the required policy (2 days min, 7, 30 days max).
+		sudo chage -l username
+
+check OS.
+	lsb_release -a || cat /etc/os-release
+
+Check UFW status.
+	sudo ufw status
+
+check SSH service.
+	sudo systemctl status ssh
+
+Check user name.
+	must be user 42 login
+	must belong to groups sudo and user42
+		getent group sudo
+		getent group user42
+
+Add new user for evaluator.
+	sudo adduser new_username
+
+Explain how to implement the password policy.
+#
+
+Add evaluator user to group.
+	sudo groupadd evaluating
+	sudo usermod -aG evaluating your_new_username
+	getent group evaluating
+
+Elaborate on advantages/disadvantages of the password policy.
+#
+
+Check the hostname of the machine is correctly formatted (user@login42).
+	hostnamectl
+
+Modify hostname.
+	sudo hostnamectl set-hostname new_hostname
+	sudo reboot (changes must be present after reboot).
+
+Restore original hostname.
+	sudo hostnamectl set-hostname new_hostname
+	sudo reboot (changes must be present after reboot).
+
+Display VM partion table.
+	lsblk
+
+Elaborate on partition table, primary, logical, encrypted, what is LVM and how it works.
+#
+
+Check is sudo is installed.
+	dpkg -l | grep sudo
+
+Assign new user to sudo group.
+	sudo usermod -aG sudo username
+
+Display and explain sudo rules.
+	sudo visudo
+#
+
+Verify /var/log/sudo/sudo.log
+	check contents of file for sudo command history
+	use sudo command, check if file was updated
+
+
+Check if UFW is installed and working.
+	sudo ufw status numbered
+
+Elaborate on what is UFW and why is helpful to use it.
+#
+	list active rules for ufw
+		check for port 4242
+		add new rule
+		check new rule was added
+		delete rule
+
+Elaborate on SSH service, what is it, what is it used for.
+	#secure shell, allows 2 computers to securely talk to each other
+		check service is installed and operational using port 4242
+			sudo service ssh status
+		connect to vm with host terminal using evaluators username
+			ssh evaluator@127.0.0.1 -p 4242
+		make sure you cannot use SSH with the “root” user as stated in the subject.
+			ssh login42@127.0.0.1 -p 4242 / ssh root@127.0.0.1 -p 4242
+
+Ask the student how their script works and see their code for it
+	cd /usr/local/bin && vim monitoring.sh
+
+What is cron?
+	How does the script run every 10 minutes from when the server starts?
+		use sleep.sh?
+
+	Check if script runs with dynamic values
+		sudo crontab -u root -e (***change 10 value to 1***)
+
+	Stop/Start the script from running on startup.
+		sudo cronstop
+		sudo cronstart
+
+	At startup, check if the script still exists in the same place,
+	The rights have remained unchanged and that it has not been modified.
+		sudo reboot
+		sudo crontab -u root -e
