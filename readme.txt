@@ -68,11 +68,12 @@
 		PASS_MIN_DAYS 2
 		PASS_WARN_AGE 7
 	changes aren't automatically applied to existing users
+		sudo chage -l <username/root>
 		sudo chage -M 30 <username/root>
 		sudo chage -m 2 <username/root>
 		sudo chage -W 7 <username/root>
 	method 1
-		apt install libpam-pwquality
+		sudo apt install libpam-pwquality
 			/etc/security/pwquality.conf
 			# Number of characters in the new password that must not be present in the old one.
 				difok = 7
@@ -85,12 +86,15 @@
 			# The maximum credit for having uppercase characters in the new password.
 			# If less than 0 it is the minimun number of uppercase characters in the new password.
 				ucredit = -1
+			# The maximum credit for having lowercase characters in the new password.
+			# If less than 0 it is the minimun number of uppercase characters in the new password.
+				lcredit = -1
 			# The maximum number of allowed consecutive same characters in the new password.
 			# The check is disabled if the value is 0.
 				maxrepeat = 3
 			# Whether to check it it contains the user name in some form.
 			# The check is disabled if the value is 0.
-				usercheck = 1
+				usercheck = 1 / reject_username
 			# Prompt user at most N times before returning with error. The default is 1.
 				retry = 3
 			# Enforces pwquality checks on the root user password.
@@ -99,7 +103,7 @@
 	method 2
 		sudo apt-get install libpam-pwquality
 			sudo vim /etc/pam.d/common-password
-				password  requisite     pam_pwquality.so  retry=3 minlen=10 ucredit=-1 dcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root
+				password  requisite     pam_pwquality.so  retry=3 minlen=10 ucredit=-1 dcredit=-1 lcredit =-1 maxrepeat=3 reject_username difok=7 enforce_for_root
 
 #hostname/users/groups
 	hostnamectl set-hostname <new_hostname>

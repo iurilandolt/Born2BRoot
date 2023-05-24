@@ -3,19 +3,68 @@ Check the signature against the students “.vdi” file.
 Clone VM || create a snapshot && open VM.
 
 How does a virtual machine work and what is its purpose?
-	#
+	# A VM is a virtual emulation of a physical computer,
+	which allows multiple OS to run at the same time.
+	Overall, virtual machines offer flexibility, resource optimization,
+	security, and cost-efficiency.
+		Server Consolidation:
+			Virtualization allows multiple virtual servers to run on a single physical server.
+		Desktop Virtualization:
+			 Users can access virtual desktops running on centralized servers from any device.
+		Isolation and Security:
+			VMs provide strong isolation between different operating systems.
+		Development and Testing:
+			VMs are used for software development, testing, and deployment.
+			Providing a controlled and reproducible environment for developers,
+			allowing test software on different OS and configs without the need for more hardware.
+		Legacy System Support:
+			VMs provide and easy way to gurantee backwards compatibility.
+		Recovery:
+			VMs provide an easy and cheap way to keep backups.
 
 The basic differences between CentOS and Debian?
-	#
+	#  Main differences would be:
+	package management systems, release cycles, target audiences.
+	- CentOS
+		focuses on stability and long-term support.
+		favored in enterprise environments.
+		uses YUM or DNF package manager.
+		primarily targets server environments.
+		no native desktop environment.
+	- Debian
+		has a longer history and a broader user base
+		more frequent release cycle and offers 3 possible branches;
+		Stable, Testing, Unstable.
+		uses APT or APTITUDE package manager.
+		Offers a wider choice of repositories and packages.
+		Natively supports desktop environments: GNOME, KDE, Xfce.
+
 
 Why debian?
 	#
+		more offer of packages/repositories.
+		larger community, easier support.
+		flexible system configuration.
+		desktop enviroment options.
+		easier to learn.
 
 What is the difference between aptitude, apt?
 	#
+		Aptitude
+			advanced user interface.
+			includes features like package search, package categorization, and interactive dependency resolution.
+			user-friendly for managing packages and resolving complex dependency scenarios.
+			is a frontend for APT.
+		APT
+			command-line interface.
+			basic options for handling packages and dependencies.
+			focused on essential package operations.
 
 What is APPArmor?
-	#
+	#  APPArmor is a kernel security module that confines individual applications,
+	allowing admins to define access controls and restrictions on their behavior.
+	It reduces risks associated with application vulnerabilities, malware, and unauthorized access.
+	Works in complain or enforce mode. Enforce mode restricts actions, Complain mode registers actions.
 
 Connect to VM as a created user (which isn’t a root).
 	Ensure the password follows the required policy (2 days min, 7, 30 days max).
@@ -40,7 +89,37 @@ Add new user for evaluator.
 	sudo adduser new_username
 
 Explain how to implement the password policy.
-	# method 1 vs method 2
+	#
+		install libpam-pwquality.
+			method 1
+				edit /etc/security/pwquality.conf
+			method 2
+				edit /etc/pam.d/common-password
+		# Number of characters in the new password that must not be present in the old one.
+			difok = 7
+		# The minimum acceptable size for the new password.
+		# (plus one if credits are not disabled which is the default)
+			minlen = 10
+		# The maximum credit for having digits in the new password.
+		# If less than 0 it is the minimun number of digits in the new password.
+			dcredit = -1
+		# The maximum credit for having uppercase characters in the new password.
+		# If less than 0 it is the minimun number of uppercase characters in the new password.
+			ucredit = -1
+		# The maximum credit for having lowercase characters in the new password.
+		# If less than 0 it is the minimun number of uppercase characters in the new password.
+			lcredit = -1
+		# The maximum number of allowed consecutive same characters in the new password.
+		# The check is disabled if the value is 0.
+			maxrepeat = 3
+		# Whether to check it it contains the user name in some form.
+		# The check is disabled if the value is 0.
+			usercheck = 1 / reject_username
+		# Prompt user at most N times before returning with error. The default is 1.
+			retry = 3
+		# Enforces pwquality checks on the root user password.
+		# Enabled if the option is present.
+			enforce_for_root
 
 Add evaluator user to group.
 	sudo groupadd evaluating
@@ -49,6 +128,17 @@ Add evaluator user to group.
 
 Elaborate on advantages/disadvantages of the password policy.
 	#
+		advantages
+			crucial for maintaining strong security practices.
+				reduces possibility of password based attacks.
+				establishes a sense of responsibility and accountability among users.
+				compliance with international standarts.
+					(complying with these standarts if mandatory for some companies).
+		disadvantages
+			user convenience.
+				strong password policies may lead to users having many passwords,
+				forgetting them and requiring constant resets may be an issue.
+
 
 Check the hostname of the machine is correctly formatted (user@login42).
 	hostnamectl
