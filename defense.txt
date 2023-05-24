@@ -3,19 +3,19 @@ Check the signature against the students “.vdi” file.
 Clone VM || create a snapshot && open VM.
 
 How does a virtual machine work and what is its purpose?
-#
+	#
 
 The basic differences between CentOS and Debian?
-#
+	#
 
 Why debian?
-#
+	#
 
 What is the difference between aptitude, apt?
-#
+	#
 
 What is APPArmor?
-#
+	#
 
 Connect to VM as a created user (which isn’t a root).
 	Ensure the password follows the required policy (2 days min, 7, 30 days max).
@@ -40,7 +40,7 @@ Add new user for evaluator.
 	sudo adduser new_username
 
 Explain how to implement the password policy.
-#
+	# method 1 vs method 2
 
 Add evaluator user to group.
 	sudo groupadd evaluating
@@ -48,7 +48,7 @@ Add evaluator user to group.
 	getent group evaluating
 
 Elaborate on advantages/disadvantages of the password policy.
-#
+	#
 
 Check the hostname of the machine is correctly formatted (user@login42).
 	hostnamectl
@@ -65,7 +65,7 @@ Display VM partion table.
 	lsblk
 
 Elaborate on partition table, primary, logical, encrypted, what is LVM and how it works.
-#
+	#
 
 Check is sudo is installed.
 	dpkg -l | grep sudo
@@ -75,7 +75,7 @@ Assign new user to sudo group.
 
 Display and explain sudo rules.
 	sudo visudo
-#
+	#
 
 Verify /var/log/sudo/sudo.log
 	check contents of file for sudo command history
@@ -86,7 +86,7 @@ Check if UFW is installed and working.
 	sudo ufw status numbered
 
 Elaborate on what is UFW and why is helpful to use it.
-#
+	#
 	list active rules for ufw
 		check for port 4242
 		add new rule

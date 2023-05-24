@@ -71,6 +71,7 @@
 		sudo chage -M 30 <username/root>
 		sudo chage -m 2 <username/root>
 		sudo chage -W 7 <username/root>
+	method 1
 		apt install libpam-pwquality
 			/etc/security/pwquality.conf
 			# Number of characters in the new password that must not be present in the old one.
@@ -95,6 +96,10 @@
 			# Enforces pwquality checks on the root user password.
 			# Enabled if the option is present.
 				enforce_for_root
+	method 2
+		sudo apt-get install libpam-pwquality
+			sudo vim /etc/pam.d/common-password
+				password  requisite     pam_pwquality.so  retry=3 minlen=10 ucredit=-1 dcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root
 
 #hostname/users/groups
 	hostnamectl set-hostname <new_hostname>
@@ -136,6 +141,37 @@
 		*/10 * * * * bash /usr/local/bin/sleep.sh && bash /usr/local/bin/monitoring.sh
 	sudo visudo
 		your_username ALL=(root) NOPASSWD: /usr/local/bin/monitoring.sh
+
+#script notes
+	Architecture
+		uname -srvmo
+	Physical CPUs
+		grep 'physical id' /proc/cpuinfo | uniq | wc -l
+	Virtual CPUs
+		grep processor /proc/cpuinfo | uniq | wc -l
+	Memory Usage
+		free -h | grep Mem | awk '{print $2}'
+		free -h | grep Mem | awk '{print $3}'
+		free -k | grep Mem | awk '{printf("%.2f%%"), $3 / $2 * 100}'
+	Disk Usage
+		df -h --total | grep total | awk '{print $2}'
+		df -h --total | grep total | awk '{print $3}'
+		df -k --total | grep total | awk '{print $5}'
+	CPU Load
+		top -bn1 | grep '^%Cpu' | xargs | awk '{printf("%.1f%%"), $2 + $4}'
+	Last Boot
+		who -b | awk '{print($3 " " $4)}'
+	LVM
+		if [ $(lsblk | grep lvm | wc -l) -eq 0 ]; then echo no; else echo yes; fi
+	TCP Connections
+		grep TCP /proc/net/sockstat | awk '{print $3}'
+	Users logged
+		who | wc -l
+	Network
+		hostname -I | awk '{print $1}'
+		ip link show | grep link/ether | awk '{print $2}'
+	Sudo
+		grep COMMAND /var/log/sudo/sudo.log | wc -l
 
 #display
 	VBoxVGA
