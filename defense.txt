@@ -193,6 +193,9 @@ Check if UFW is installed and working.
 
 Elaborate on what is UFW and why is helpful to use it.
 	#
+	Uncomplicated Firewall.
+	A firewall is a network device or software that acts as a barrier,
+	between a trusted internal network and untrusted external networks
 		list active rules for ufw
 			check for port 4242
 			add new rule
