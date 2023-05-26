@@ -253,6 +253,7 @@ Script notes.
 		if [ $(lsblk | grep lvm | wc -l) -eq 0 ]; then echo no; else echo yes; fi
 	TCP Connections
 		grep TCP /proc/net/sockstat | awk '{print $3}'
+		ss -t | grep '^ESTAB' | wc -l
 	Users logged
 		who | wc -l
 	Network
