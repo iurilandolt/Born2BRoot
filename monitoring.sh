@@ -39,7 +39,8 @@ LVM=$(if [ $(lsblk | grep lvm | wc -l) -eq 0 ]; then echo no; else echo yes; fi)
 #lsblk list block devices on system
 #grep lvm and if else statement check if there is any line containing 'lvm'
 #in the output of lsblk and displays yes or no accordingly
-TCP=$(grep TCP /proc/net/sockstat | awk '{print $3}')
+#TCP=$(grep TCP /proc/net/sockstat | awk '{print $3}')
+TCP=$(ss -t | grep '^ESTAB' | wc -l)
 USER_LOG=$(who | wc -l)
 IP_ADDR=$(hostname -I | awk '{print $1}')
 #retrieve ip adress, print first parameter
