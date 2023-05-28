@@ -2,35 +2,35 @@
 
 arch=$(uname -srvmo)
 
-pcpu=$(grep 'physical id' /proc/cpuinfo | uniq | wc -l)
+pcpu=$(grep '^core id' /proc/cpuinfo | sort -u | wc -l)
 
-vcpu=$(grep processor /proc/cpuinfo | uniq | wc -l)
+vcpu=$(grep processor /proc/cpuinfo | wc -l)
 
 rtotal=$(free -h | grep Mem | awk '{print $2}')
 
 rused=$(free -h | grep Mem | awk '{print $3}')
 
-rperc=$(free -k | grep Mem | awk '{printf("%.2f%%"), $3 / $2 * 100}')
+rperc=$(free -m | grep Mem | awk '{printf("%.2f%%"), $3 / $2 * 100}')
 
 dtotal=$(df -h --total | grep total | awk '{print $2}')
 
-dtotal=$(df -h --total | grep total | awk '{print $3}')
+dused=$(df -h --total | grep total | awk '{print $3}')
 
 dperc=$(df -k --total | grep total | awk '{print $5}')
 
-cpuload=$(top -bn1 | grep '^%Cpu' | xargs | awk '{printf("%.1f%%"), $2 + $4}')
+cpuload=$(top -bn1 | awk '/^%Cpu/ {print (100 - $8) "%"}')
 
-lboot=$(who -b | awk '{print($3 " " $4)}')
+lboot=$(who -b | awk '{print ($3 " @ " $4)}')
 
-lvm=$(if [ $(lsblk | grep lvm | wc -l) -eq 0 ]; then echo no; else echo yes; fi)
+lvm=$(if lsblk | grep -q lvm; then echo yes; else echo no; fi)
 
 tcp=$(ss -t | grep '^ESTAB' | wc -l)
 
 luser=$(who | wc -l)
 
-ip=$(hostname -I | awk '{print $1}')
+ip=$(hostname -I)
 
-mac=$(ip link show | grep link/ether | awk '{print $2}')
+mac=$(ip a | grep link/ether | awk '{print $2}')
 
 sudo=$(grep COMMAND /var/log/sudo/sudo.log | wc -l)
 
@@ -40,8 +40,8 @@ wall "
        architecture    : $arch
        Physical CPUs   : $pcpu
        Virtual CPUs    : $vcpu
-       Memory Usage    : $rused/$rtotal ($rperc)
-       Disk Usage      : $dtotal/$dtotal ($dperc)
+       Memory Usage    : $rused/$rtotal($rperc)
+       Disk Usage      : $dused/$dtotal($dperc)
        CPU Load        : $cpuload
        Last Boot       : $lboot
        LVM use         : $lvm
