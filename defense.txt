@@ -23,10 +23,10 @@ How does a virtual machine work and what is its purpose?
 			Recovery:
 				VMs provide an easy and cheap way to keep backups.
 
-The basic differences between CentOS and Debian?
+The basic differences between Rocky and Debian?
 	#
 		Main differences would be: package management systems, release cycles, target audiences.
-		- CentOS
+		- Rocky
 			focuses on stability and long-term support.
 			favored in enterprise environments.
 			uses YUM or DNF package manager.
