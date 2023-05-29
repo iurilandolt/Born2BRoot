@@ -1,8 +1,9 @@
 #!/bin/bash
 
 arch=$(uname -srvmo)
-pcpu=$(grep '^core id' /proc/cpuinfo | sort -u | wc -l)
-vcpu=$(grep processor /proc/cpuinfo | wc -l)
+pcpu=$(lscpu | grep 'Core(s)' | awk '{print $4}')
+vcpu=$(lscpu | grep 'Thread(s)' | awk '{print $4}')
+tcpu=$()
 ramt=$(free -m | grep Mem | awk '{print $2}')
 ramu=$(free -m | grep Mem | awk '{print $3}')
 ramp=$(free -m | grep Mem | awk '{printf("%d%%"), $3 / $2 * 100}')
@@ -21,7 +22,7 @@ sudo=$(grep COMMAND /var/log/sudo/sudo.log | wc -l)
 wall "
 	Architecture	: $arch
 	PCPUs			: $pcpu
-	VCPUs			: $vcpu
+	VCPUs			:
 	Memory Usage	: $ramu / $ramt"mb" ($ramp)
 	Disk Usage		: $disku / $diskt"mb" ($diskp)
 	CPU Load		: $cpup
