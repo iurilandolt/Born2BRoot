@@ -3,7 +3,7 @@
 arch=$(uname -srvmo)
 pcpu=$(lscpu | grep 'Core(s)' | awk '{print $4}')
 vcpu=$(lscpu | grep 'Thread(s)' | awk '{print $4}')
-tcpu=$()
+tcpu=$(($pcpu * $vcpu))
 ramt=$(free -m | grep Mem | awk '{print $2}')
 ramu=$(free -m | grep Mem | awk '{print $3}')
 ramp=$(free -m | grep Mem | awk '{printf("%d%%"), $3 / $2 * 100}')
@@ -22,7 +22,7 @@ sudo=$(grep COMMAND /var/log/sudo/sudo.log | wc -l)
 wall "
 	Architecture	: $arch
 	PCPUs			: $pcpu
-	VCPUs			:
+	VCPUs			: $tcpu
 	Memory Usage	: $ramu / $ramt"mb" ($ramp)
 	Disk Usage		: $disku / $diskt"mb" ($diskp)
 	CPU Load		: $cpup
