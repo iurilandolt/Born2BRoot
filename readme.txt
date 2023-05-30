@@ -147,35 +147,34 @@
 		your_username ALL=(root) NOPASSWD: /usr/local/bin/monitoring.sh
 
 #script notes
+
 	Architecture
-		uname -srvmo
-	Physical CPUs
-		grep 'physical id' /proc/cpuinfo | uniq | wc -l
-	Virtual CPUs
-		grep processor /proc/cpuinfo | uniq | wc -l
-	Memory Usage
-		free -h | grep Mem | awk '{print $2}'
-		free -h | grep Mem | awk '{print $3}'
-		free -k | grep Mem | awk '{printf("%.2f%%"), $3 / $2 * 100}'
-	Disk Usage
-		df -h --total | grep total | awk '{print $2}'
-		df -h --total | grep total | awk '{print $3}'
-		df -k --total | grep total | awk '{print $5}'
-	CPU Load
-		top -bn1 | grep '^%Cpu' | xargs | awk '{printf("%.1f%%"), $2 + $4}'
-	Last Boot
-		who -b | awk '{print($3 " " $4)}'
+		arch=$(uname -srvmo)
+	CPUs
+		pcpu=$(lscpu | grep 'Core(s)' | awk '{print $4}')
+		vcpu=$(lscpu | grep 'Thread(s)' | awk '{print $4}')
+		tcpu=$(($pcpu * $vcpu))
+		cpup=$(top -bn1 | grep '%Cpu(s)' | awk '{printf("%d%%", $2 + $4)}')
+	Memory
+		ramt=$(free -m | grep Mem | awk '{print $2}')
+		ramu=$(free -m | grep Mem | awk '{print $3}')
+		ramp=$(free -m | grep Mem | awk '{printf("%d%%"), $3 / $2 * 100}')
+	Disk
+		diskt=$(df -m --total | grep total | awk '{print $2}')
+		disku=$(df -m --total | grep total | awk '{print $3}')
+		diskp=$(df -m --total | grep total | awk '{print $5}')
+	Last Reboot
+		rboot=$(last | grep 'still running' -m 1 | awk '{print $5" "$6" "$7" @ "$8}')
 	LVM
-		if [ $(lsblk | grep lvm | wc -l) -eq 0 ]; then echo no; else echo yes; fi
-	TCP Connections
-		grep TCP /proc/net/sockstat | awk '{print $3}'
-	Users logged
-		who | wc -l
+		lvm=$(if lsblk | grep -q lvm; then echo yes; else echo no; fi)
+	Logged Users
+		users=$(users | wc -w)
 	Network
-		hostname -I | awk '{print $1}'
-		ip link show | grep link/ether | awk '{print $2}'
-	Sudo
-		grep COMMAND /var/log/sudo/sudo.log | wc -l
+		tcp=$(ss | grep 'tcp' | wc -l)
+		ip=$(hostname -I)
+		mac=$(ip link | grep link/ether | awk '{print $2}')
+	Sudo Log
+		sudo=$(grep 'COMMAND=' /var/log/sudo/sudo.log | wc -l)
 
 #display
 	VBoxVGA
