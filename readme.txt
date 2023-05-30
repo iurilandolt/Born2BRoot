@@ -164,7 +164,7 @@
 		disku=$(df -m --total | grep total | awk '{print $3}')
 		diskp=$(df -m --total | grep total | awk '{print $5}')
 	Last Reboot
-		rboot=$(last | grep 'still running' -m 1 | awk '{print $5" "$6" "$7" @ "$8}')
+		rboot=$(last | grep 'reboot' | grep 'still running' -m 1 | awk '{print $5" "$6" "$7" @ "$8}')
 	LVM
 		lvm=$(if lsblk | grep -q lvm; then echo yes; else echo no; fi)
 	Logged Users

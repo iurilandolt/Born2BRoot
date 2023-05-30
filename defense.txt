@@ -5,9 +5,8 @@ Clone VM || create a snapshot && open VM.
 How does a virtual machine work and what is its purpose?
 	#
 		A VM is a virtual emulation of a physical computer,
-		which allows multiple OS to run at the same time.
-		Overall, virtual machines offer flexibility, resource optimization,
-		security, and cost-efficiency.
+		allowing multiple OS to run at the same time.
+		Overall, virtual machines offer flexibility, resource optimization, security, and cost-efficiency.
 			Server Consolidation:
 				Virtualization allows multiple virtual servers to run on a single physical server.
 			Desktop Virtualization:
@@ -29,9 +28,10 @@ The basic differences between Rocky and Debian?
 		- Rocky
 			focuses on stability and long-term support.
 			favored in enterprise environments.
+			closed system, less prone to user error
 			uses YUM or DNF package manager.
 			primarily targets server environments.
-			no native desktop environment.
+
 		- Debian
 			has a longer history and a broader user base
 			more frequent release cycle and offers 3 possible branches;
@@ -68,7 +68,7 @@ What is APPArmor?
 		Works in complain or enforce mode. Enforce mode restricts actions, Complain mode registers actions.
 
 Connect to VM as a created user (which isn’t a root).
-	Ensure the password follows the required policy (2 days min, 7, 30 days max).
+	Ensure the password follows the required policy (2 days min, 7 warning, 30 days max).
 		sudo chage -l username
 
 check OS.
@@ -168,11 +168,9 @@ Elaborate on partition table, primary, logical, encrypted, what is LVM and how i
 			a partition that is encrypted to protect its contents from unauthorized access.
 		LVM:
 			logical volume manager.
-			disk management technology that provides advanced storage management features.
+			provides advanced storage management features.
 			allows creating of logical volumes that span multiple physical disks or partitions,
-			combining their storage capacity into a single logical volume.
-			LVM has advantages such as improved storage utilization, flexibility in managing disk space,
-			and the ability to dynamically resize volumes as needed.
+			ability to dynamically resize volumes as needed.
 
 Check is sudo is installed.
 	dpkg -l | grep sudo
@@ -183,6 +181,20 @@ Assign new user to sudo group.
 Display and explain sudo rules.
 	sudo visudo
 	#
+	Restricted privileges.
+	Logs of the actions taken by users.
+	root/user can execute from ALL terminals, acting as ALL (any) users, and run ALL (any) command.
+		root ALL=(ALL) ALL
+		user ALL=(ALL) ALL
+
+		Defaults env_reset
+		Defaults mail_badpass
+		Defaults secure_path
+		Defaults passwd_tries
+		Defaults badpass_message
+		Defaults logfile
+		Defaults log_input/log_output
+		Defaults requiretty
 
 Verify /var/log/sudo/sudo.log
 	check contents of file for sudo command history
@@ -215,20 +227,20 @@ Ask the student how their script works and see their code for it
 	cd /usr/local/bin && vim monitoring.sh
 
 What is cron?
-	How does the script run every 10 minutes from when the server starts?
-		use sleep.sh?
+	#
+	Job scheduler that is used to setup tasks to run periodically at a fixed date or interval.
 
-	Check if script runs with dynamic values
-		sudo crontab -u root -e (***change 10 value to 1***)
+		Check if script runs with dynamic values
+			sudo crontab -u root -e (***change 10 value to 1***)
 
-	Stop/Start the script from running on startup.
-		sudo cronstop
-		sudo cronstart
+		Stop/Start the script from running on startup.
+			sudo cronstop
+			sudo cronstart
 
-	At startup, check if the script still exists in the same place,
-	The rights have remained unchanged and that it has not been modified.
-		sudo reboot
-		sudo crontab -u root -e
+		At startup, check if the script still exists in the same place,
+		The rights have remained unchanged and that it has not been modified.
+			sudo reboot
+			sudo crontab -u root -e
 
 Script notes.
 	Architecture
@@ -239,15 +251,15 @@ Script notes.
 		tcpu=$(($pcpu * $vcpu))
 		cpup=$(top -bn1 | grep '%Cpu(s)' | awk '{printf("%d%%", $2 + $4)}')
 	Memory
-		ramt=$(free -m | grep Mem | awk '{print $2}')
-		ramu=$(free -m | grep Mem | awk '{print $3}')
+		ramt=$(free -m | grep Mem | awk '{print $2}') #total
+		ramu=$(free -m | grep Mem | awk '{print $3}') #used
 		ramp=$(free -m | grep Mem | awk '{printf("%d%%"), $3 / $2 * 100}')
 	Disk
 		diskt=$(df -m --total | grep total | awk '{print $2}')
 		disku=$(df -m --total | grep total | awk '{print $3}')
 		diskp=$(df -m --total | grep total | awk '{print $5}')
 	Last Reboot
-		rboot=$(last | grep 'still running' -m 1 | awk '{print $5" "$6" "$7" @ "$8}')
+		rboot=$(last | grep 'reboot' | grep 'still running' -m 1 | awk '{print $5" "$6" "$7" @ "$8}')
 	LVM
 		lvm=$(if lsblk | grep -q lvm; then echo yes; else echo no; fi)
 	Logged Users
